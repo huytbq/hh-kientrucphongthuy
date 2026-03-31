@@ -2,6 +2,7 @@ import HeroSection from '@/components/HeroSection'
 import ServiceSection from '@/components/ServiceSection'
 import ProcessSection from '@/components/ProcessSection'
 import WhyUsSection from '@/components/WhyUsSection'
+import TestimonialSection from '@/components/TestimonialSection'
 import CTABanner from '@/components/CTABanner'
 
 export default function HomePage() {
@@ -11,6 +12,7 @@ export default function HomePage() {
       <ServiceSection />
       <ProcessSection />
       <WhyUsSection />
+      <TestimonialSection />
       <CTABanner />
     </>
   )

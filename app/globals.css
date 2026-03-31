@@ -37,3 +37,57 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
+
+/* ── Custom properties ── */
+:root {
+  --forest-gradient: linear-gradient(135deg, #0F2318 0%, #1C3B2A 50%, #0F2318 100%);
+  --gold-glow: 0 0 40px rgba(200,169,81,0.15);
+  --section-padding: 100px 80px;
+}
+
+/* ── Scroll reveal utilities ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Keyframe animations ── */
+@keyframes shimmer {
+  0%, 100% { opacity: 0.04 }
+  50%       { opacity: 0.09 }
+}
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0) }
+  50%      { transform: translateY(-8px) }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px) }
+  to   { opacity: 1; transform: translateY(0) }
+}
+@keyframes borderPulse {
+  0%, 100% { border-color: rgba(200,169,81,0.3) }
+  50%      { border-color: rgba(200,169,81,0.8) }
+}

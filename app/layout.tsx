@@ -4,6 +4,8 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import FloatingContact from '@/components/FloatingContact'
+import ScrollRevealWrapper from '@/components/ScrollRevealWrapper'
+import PageTransition from '@/components/PageTransition'
 import { siteMetadata, SITE_URL } from '@/lib/metadata'
 import { BRAND } from '@/lib/constants'
 
@@ -73,7 +75,11 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col antialiased">
         <Header />
-        <main className="flex-1">{children}</main>
+        <ScrollRevealWrapper>
+          <PageTransition>
+            <main className="flex-1">{children}</main>
+          </PageTransition>
+        </ScrollRevealWrapper>
         <Footer />
         <FloatingContact />
       </body>

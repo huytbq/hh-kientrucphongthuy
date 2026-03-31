@@ -1,151 +1,307 @@
 'use client'
 
-import Link from 'next/link'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
-import { BRAND } from '@/lib/constants'
+import { ChevronDown } from 'lucide-react'
+import Link from 'next/link'
 
-const GRID_PATTERN = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' fill='none'/%3E%3Cpath d='M0 0h40M0 0v40' stroke='%23C8A951' stroke-width='0.4'/%3E%3C/svg%3E")`
+/* ── CountUp hook ── */
+function useCountUp(target: number, duration = 2000, start = false) {
+  const [value, setValue] = useState(0)
+  useEffect(() => {
+    if (!start) return
+    const startTime = performance.now()
+    const easeOut = (t: number) => 1 - Math.pow(1 - t, 3)
+    const tick = (now: number) => {
+      const elapsed = now - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      setValue(Math.round(easeOut(progress) * target))
+      if (progress < 1) requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick)
+  }, [target, duration, start])
+  return value
+}
+
+/* ── Stat item ── */
+function StatItem({
+  value,
+  suffix,
+  label,
+  started,
+}: {
+  value: number
+  suffix: string
+  label: string
+  started: boolean
+}) {
+  const count = useCountUp(value, 2000, started)
+  return (
+    <div className="flex flex-col items-center gap-1 px-6 py-5 border-r border-gold/15 last:border-r-0">
+      <span
+        className="text-3xl sm:text-4xl font-semibold text-gold leading-none"
+        style={{ fontFamily: 'var(--font-lora)' }}
+      >
+        {count}
+        {suffix}
+      </span>
+      <span
+        className="text-[10px] uppercase tracking-widest text-white/40 mt-1 text-center"
+        style={{ fontFamily: 'var(--font-josefin)', fontWeight: 300 }}
+      >
+        {label}
+      </span>
+    </div>
+  )
+}
 
 const STATS = [
-  { num: '500+', label: 'Công trình' },
-  { num: '15+', label: 'Năm kinh nghiệm' },
-  { num: '98%', label: 'Khách hài lòng' },
-  { num: '63+', label: 'Tỉnh thành' },
+  { value: 500, suffix: '+', label: 'Công Trình' },
+  { value: 15, suffix: '+', label: 'Năm Kinh Nghiệm' },
+  { value: 98, suffix: '%', label: 'Hài Lòng' },
+  { value: 63, suffix: '+', label: 'Tỉnh Thành' },
 ]
 
-export default function HeroSection() {
-  return (
-    <section className="flex min-h-screen pt-16 lg:pt-18 overflow-hidden">
-      {/* ── Left column 60% ── */}
-      <motion.div
-        className="relative flex flex-col justify-center w-full lg:w-[60%] bg-forest-deep px-8 sm:px-12 lg:px-16 py-20 border-r-2 border-gold/40"
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-      >
-        {/* Subtle grid background */}
-        <div
-          className="absolute inset-0 opacity-[0.06]"
-          style={{ backgroundImage: GRID_PATTERN }}
-        />
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] as [number, number, number, number], delay },
+  }),
+}
 
-        <div className="relative max-w-xl">
-          {/* Badge */}
-          <div
-            className="inline-flex items-center gap-2 border border-gold/40 px-4 py-1.5 mb-8 text-gold text-xs tracking-widest uppercase"
-            style={{ fontFamily: 'var(--font-josefin)', fontWeight: 300 }}
+export default function HeroSection() {
+  const ribbonRef = useRef<HTMLDivElement>(null)
+  const [statsStarted, setStatsStarted] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStatsStarted(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.3 }
+    )
+    if (ribbonRef.current) observer.observe(ribbonRef.current)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <section className="relative min-h-screen flex flex-col overflow-hidden">
+
+      {/* Layer 1 — background gradient */}
+      <div
+        className="absolute inset-0"
+        style={{ background: 'var(--forest-gradient)' }}
+      />
+
+      {/* Layer 2 — bát quái SVG texture */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          right: '-10%',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          width: 700,
+          height: 700,
+          animation: 'shimmer 4s ease-in-out infinite',
+        }}
+      >
+        <svg viewBox="0 0 700 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {[320, 260, 200, 140, 80].map((r) => (
+            <circle key={r} cx="350" cy="350" r={r} stroke="#C8A951" strokeWidth="0.8" />
+          ))}
+          {Array.from({ length: 8 }, (_, i) => {
+            const angle = (i * Math.PI) / 4
+            const x2 = 350 + Math.cos(angle) * 320
+            const y2 = 350 + Math.sin(angle) * 320
+            return (
+              <line key={i} x1="350" y1="350" x2={x2} y2={y2} stroke="#C8A951" strokeWidth="0.8" />
+            )
+          })}
+          <polygon
+            points={Array.from({ length: 8 }, (_, i) => {
+              const angle = (i * Math.PI) / 4 - Math.PI / 8
+              return `${350 + Math.cos(angle) * 320},${350 + Math.sin(angle) * 320}`
+            }).join(' ')}
+            stroke="#C8A951"
+            strokeWidth="0.8"
+          />
+          <circle cx="350" cy="350" r="4" fill="#C8A951" />
+        </svg>
+      </div>
+
+      {/* Layer 3 — left gradient overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to right, #0F2318 40%, transparent 85%)',
+        }}
+      />
+
+      {/* Layer 4 — content */}
+      <div className="relative z-10 flex-1 flex items-center px-6 sm:px-12 lg:px-20 pt-20">
+        <div style={{ maxWidth: 600 }}>
+
+          {/* Eyebrow pill */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={0}
+            className="inline-block mb-6"
           >
-            <span>✦</span>
-            <span>Hơn 15 năm kinh nghiệm</span>
-          </div>
+            <span
+              className="text-gold text-[11px] uppercase tracking-widest px-4 py-1.5"
+              style={{
+                fontFamily: 'var(--font-josefin)',
+                fontWeight: 300,
+                border: '1px solid rgba(200,169,81,0.4)',
+              }}
+            >
+              ✦ Hơn 15 năm kinh nghiệm
+            </span>
+          </motion.div>
 
           {/* H1 */}
-          <h1
-            className="text-4xl sm:text-5xl lg:text-[3.25rem] leading-[1.15] font-semibold text-white mb-4"
-            style={{ fontFamily: 'var(--font-lora)' }}
+          <motion.h1
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={0.15}
+            className="text-white mb-6 leading-[1.1]"
+            style={{
+              fontFamily: 'var(--font-lora)',
+              fontSize: 'clamp(40px, 5vw, 64px)',
+              fontWeight: 600,
+            }}
           >
-            Không Gian Sống{' '}
+            Không Gian Sống
             <br />
-            <em className="not-italic text-gold">Hài Hòa Vượng Khí</em>
-          </h1>
+            <em style={{ color: '#C8A951', fontStyle: 'italic' }}>Hài Hòa Vượng Khí</em>
+          </motion.h1>
+
+          {/* Divider */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 0.5, ease: 'easeOut', delay: 0.3 }}
+            style={{
+              width: 48,
+              height: 2,
+              background: '#C8A951',
+              marginBottom: 24,
+              transformOrigin: 'left',
+            }}
+          />
 
           {/* Tagline */}
-          <p
-            className="text-gold/70 text-xs tracking-[0.2em] uppercase mb-6"
-            style={{ fontFamily: 'var(--font-josefin)', fontWeight: 300 }}
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={0.35}
+            className="mb-4"
+            style={{
+              fontFamily: 'var(--font-josefin)',
+              fontWeight: 300,
+              fontSize: 12,
+              letterSpacing: '0.25em',
+              textTransform: 'uppercase',
+              color: '#DFC07E',
+            }}
           >
-            {BRAND.slogan}
-          </p>
+            Khoa học · Truyền thống · Hiệu quả
+          </motion.p>
 
           {/* Description */}
-          <p
-            className="text-white/60 text-sm leading-7 mb-10 max-w-md"
-            style={{ fontFamily: 'var(--font-body)', fontWeight: 300 }}
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={0.45}
+            style={{
+              fontSize: 14,
+              lineHeight: 1.85,
+              color: 'rgba(248,246,241,0.65)',
+              maxWidth: 480,
+            }}
           >
-            Kết hợp tri thức phong thủy ngàn năm với ngôn ngữ kiến trúc hiện đại,
-            chúng tôi kiến tạo không gian nơi năng lượng tích cực lưu chuyển
-            và thịnh vượng được vun đắp bền lâu.
-          </p>
+            Tư vấn kiến trúc phong thủy khoa học — kết hợp triết học truyền thống
+            và kiến trúc hiện đại để tạo ra không gian sống và làm việc thuận khí,
+            vượng tài cho từng gia chủ.
+          </motion.p>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          {/* CTA row */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={0.55}
+            className="flex flex-wrap gap-3.5"
+            style={{ marginTop: 44 }}
+          >
             <Link
               href="/lien-he"
-              className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-forest-deep text-sm font-semibold px-7 py-3.5 transition-colors duration-200"
-              style={{ fontFamily: 'var(--font-body)' }}
+              className="inline-block text-[11px] font-bold uppercase tracking-[2px] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+              style={{
+                fontFamily: 'var(--font-josefin)',
+                background: '#C8A951',
+                color: '#0F2318',
+                padding: '16px 36px',
+                borderRadius: 2,
+              }}
             >
               Đặt Lịch Tư Vấn
-              <ArrowRight size={16} />
             </Link>
             <Link
               href="/dich-vu"
-              className="inline-flex items-center justify-center gap-2 border border-gold/50 text-gold hover:bg-gold/10 text-sm font-medium px-7 py-3.5 transition-colors duration-200"
-              style={{ fontFamily: 'var(--font-body)' }}
+              className="inline-block text-[11px] uppercase tracking-[2px] transition-all duration-200 hover:bg-gold/10 hover:border-gold"
+              style={{
+                fontFamily: 'var(--font-josefin)',
+                fontWeight: 600,
+                color: '#C8A951',
+                padding: '16px 28px',
+                border: '1px solid rgba(200,169,81,0.5)',
+              }}
             >
               Xem Dịch Vụ
             </Link>
-          </div>
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* ── Right column 40% ── */}
-      <motion.div
-        className="hidden lg:flex w-[40%] bg-offwhite flex-col justify-center px-10 xl:px-14 py-20 relative overflow-hidden"
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+      {/* Scroll indicator */}
+      <div
+        className="relative z-10 flex flex-col items-center gap-1.5 pb-6"
+        style={{ animation: 'floatUp 2s ease-in-out infinite' }}
       >
-        {/* Octagon decoration */}
-        <div className="absolute bottom-4 right-4 opacity-[0.07] pointer-events-none">
-          <svg width="260" height="260" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="97,0 163,0 260,97 260,163 163,260 97,260 0,163 0,97" stroke="#1C3B2A" strokeWidth="1.5"/>
-            <polygon points="109,20 151,20 240,109 240,151 151,240 109,240 20,151 20,109" stroke="#1C3B2A" strokeWidth="1"/>
-            <polygon points="121,40 139,40 220,121 220,139 139,220 121,220 40,139 40,121" stroke="#C8A951" strokeWidth="0.8"/>
-            <line x1="130" y1="0" x2="130" y2="260" stroke="#1C3B2A" strokeWidth="0.5"/>
-            <line x1="0" y1="130" x2="260" y2="130" stroke="#1C3B2A" strokeWidth="0.5"/>
-            <line x1="38" y1="38" x2="222" y2="222" stroke="#1C3B2A" strokeWidth="0.5"/>
-            <line x1="222" y1="38" x2="38" y2="222" stroke="#1C3B2A" strokeWidth="0.5"/>
-          </svg>
-        </div>
+        <span
+          className="text-[10px] uppercase tracking-widest text-white/30"
+          style={{ fontFamily: 'var(--font-josefin)', fontWeight: 300 }}
+        >
+          Cuộn xuống
+        </span>
+        <ChevronDown size={14} className="text-white/30" />
+      </div>
 
-        <div className="relative">
-          {/* "Tại sao chọn HH?" card */}
-          <div className="bg-white border-l-4 border-forest p-6 mb-8 shadow-sm">
-            <h2
-              className="text-forest text-base font-semibold mb-2"
-              style={{ fontFamily: 'var(--font-lora)' }}
-            >
-              Tại sao chọn HH?
-            </h2>
-            <p className="text-forest/60 text-xs leading-6" style={{ fontFamily: 'var(--font-body)', fontWeight: 300 }}>
-              Chúng tôi không chỉ tư vấn phong thủy — chúng tôi kiến tạo
-              không gian dựa trên nền tảng khoa học, thẩm mỹ và tâm linh
-              được chưng cất qua hàng thập kỷ thực tiễn.
-            </p>
-          </div>
-
-          {/* Stats 2×2 */}
-          <div className="grid grid-cols-2 gap-3">
-            {STATS.map((s) => (
-              <div key={s.label} className="bg-white p-5 border border-forest/8">
-                <div
-                  className="text-3xl font-bold text-forest leading-none mb-1"
-                  style={{ fontFamily: 'var(--font-josefin)', fontWeight: 700 }}
-                >
-                  {s.num}
-                </div>
-                <div
-                  className="text-forest/55 text-xs"
-                  style={{ fontFamily: 'var(--font-body)', fontWeight: 300 }}
-                >
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
+      {/* Layer 5 — stat ribbon */}
+      <div
+        ref={ribbonRef}
+        className="relative z-10 grid grid-cols-2 sm:grid-cols-4 border-t"
+        style={{
+          background: 'rgba(15,35,24,0.85)',
+          backdropFilter: 'blur(8px)',
+          borderColor: 'rgba(200,169,81,0.15)',
+        }}
+      >
+        {STATS.map((s) => (
+          <StatItem key={s.label} {...s} started={statsStarted} />
+        ))}
+      </div>
     </section>
   )
 }
