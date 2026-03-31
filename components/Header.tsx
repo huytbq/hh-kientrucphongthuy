@@ -1,0 +1,127 @@
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import { Menu, X } from 'lucide-react'
+import { BRAND, NAV_LINKS } from '@/lib/constants'
+
+export default function Header() {
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  return (
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-forest/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 lg:h-18">
+
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3 shrink-0">
+              <div
+                className="w-10 h-10 flex items-center justify-center bg-forest"
+                style={{ fontFamily: 'var(--font-josefin)', fontWeight: 700 }}
+              >
+                <span className="text-gold text-lg tracking-tight">HH</span>
+              </div>
+              <span
+                className="hidden sm:block text-forest text-sm font-semibold leading-snug"
+                style={{ fontFamily: 'var(--font-body)' }}
+              >
+                {BRAND.name}
+              </span>
+            </Link>
+
+            {/* Desktop nav */}
+            <nav className="hidden lg:flex items-center gap-7">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-forest/70 hover:text-forest text-sm font-medium transition-colors duration-150"
+                  style={{ fontFamily: 'var(--font-body)' }}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+
+            {/* Desktop CTA */}
+            <div className="hidden lg:block">
+              <Link
+                href="/lien-he"
+                className="inline-block bg-forest text-white text-sm font-semibold px-5 py-2.5 hover:bg-forest-mid transition-colors duration-150"
+                style={{ fontFamily: 'var(--font-body)' }}
+              >
+                Tư Vấn Miễn Phí
+              </Link>
+            </div>
+
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="lg:hidden p-2 text-forest"
+              aria-label="Mở menu"
+            >
+              <Menu size={22} />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-[60] bg-white flex flex-col">
+          {/* Header row */}
+          <div className="flex items-center justify-between px-4 h-16 border-b border-forest/10">
+            <Link
+              href="/"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-3"
+            >
+              <div
+                className="w-10 h-10 flex items-center justify-center bg-forest"
+                style={{ fontFamily: 'var(--font-josefin)', fontWeight: 700 }}
+              >
+                <span className="text-gold text-lg">HH</span>
+              </div>
+              <span className="text-forest text-sm font-semibold">{BRAND.name}</span>
+            </Link>
+            <button
+              onClick={() => setMobileOpen(false)}
+              className="p-2 text-forest"
+              aria-label="Đóng menu"
+            >
+              <X size={22} />
+            </button>
+          </div>
+
+          {/* Nav links */}
+          <nav className="flex-1 flex flex-col justify-center px-8 gap-1">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="text-forest text-2xl font-medium py-3 border-b border-forest/8 hover:text-gold transition-colors"
+                style={{ fontFamily: 'var(--font-lora)' }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Bottom CTA */}
+          <div className="px-8 pb-10">
+            <Link
+              href="/lien-he"
+              onClick={() => setMobileOpen(false)}
+              className="block w-full text-center bg-forest text-white font-semibold py-4 hover:bg-forest-mid transition-colors"
+            >
+              Tư Vấn Miễn Phí
+            </Link>
+            <p className="text-center text-forest/50 text-sm mt-4">{BRAND.phone}</p>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
