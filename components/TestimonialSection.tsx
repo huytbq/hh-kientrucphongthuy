@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const TESTIMONIALS = [
   {
@@ -24,13 +24,34 @@ const TESTIMONIALS = [
     location: 'Đà Nẵng',
     initial: 'H',
   },
+  {
+    quote:
+      'Chúng tôi nhờ HH tư vấn phong thủy cho văn phòng mới trước khi chuyển vào. Bố cục được điều chỉnh hợp lý, nhân viên làm việc thoải mái hơn và không khí công ty cũng tích cực hơn hẳn.',
+    name: 'Anh Lê Hoàng Nam',
+    location: 'Hà Nội',
+    initial: 'N',
+  },
+  {
+    quote:
+      'Báo cáo của HH rất chuyên nghiệp — có sơ đồ mặt bằng, chú thích từng khu vực và giải thích lý do cụ thể. Tôi hiểu được tại sao phải điều chỉnh chứ không chỉ nghe theo.',
+    name: 'Chị Võ Thị Mai',
+    location: 'TP. HCM',
+    initial: 'M',
+  },
+  {
+    quote:
+      'Ban đầu tôi khá hoài nghi về phong thủy, nhưng cách HH giải thích bằng khoa học môi trường và tâm lý không gian khiến tôi thay đổi quan điểm. Rất đáng để trải nghiệm.',
+    name: 'Anh Nguyễn Thành Đạt',
+    location: 'Đà Nẵng',
+    initial: 'Đ',
+  },
 ]
 
-function TestimonialCard({ t }: { t: typeof TESTIMONIALS[0] }) {
+const TOTAL = TESTIMONIALS.length // 6
+
+function TestimonialCard({ t }: { t: (typeof TESTIMONIALS)[0] }) {
   return (
-    <div
-      className="shrink-0 flex flex-col w-full md:w-1/3 px-3"
-    >
+    <div className="shrink-0 flex flex-col w-full md:w-1/3 px-3">
       <div
         className="flex flex-col h-full"
         style={{
@@ -113,10 +134,30 @@ function TestimonialCard({ t }: { t: typeof TESTIMONIALS[0] }) {
 
 export default function TestimonialSection() {
   const [current, setCurrent] = useState(0)
-  const last = TESTIMONIALS.length - 1
+  const [itemsPerView, setItemsPerView] = useState(3)
+
+  useEffect(() => {
+    const update = () => setItemsPerView(window.innerWidth >= 768 ? 3 : 1)
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
+  const totalDots = Math.ceil(TOTAL / itemsPerView)
+  // clamp current to valid page boundary when itemsPerView changes
+  const maxCurrent = (totalDots - 1) * itemsPerView
+
+  const goPrev = () => setCurrent((c) => Math.max(0, c - itemsPerView))
+  const goNext = () => setCurrent((c) => Math.min(maxCurrent, c + itemsPerView))
+  const goDot  = (dotIdx: number) => setCurrent(dotIdx * itemsPerView)
+
+  const activeDot = Math.floor(current / itemsPerView)
+
+  // translateX: each card is 1/TOTAL of the track width
+  const translatePct = current * (100 / TOTAL)
 
   return (
-    <section style={{ padding: 'var(--section-padding)', background: '#fff' }}>
+    <section style={{ padding: '100px 80px 64px', background: '#fff' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -140,7 +181,7 @@ export default function TestimonialSection() {
           {/* Prev arrow */}
           {current > 0 && (
             <button
-              onClick={() => setCurrent((c) => Math.max(0, c - 1))}
+              onClick={goPrev}
               aria-label="Trước"
               className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 flex items-center justify-center bg-white text-forest transition-all duration-200 hover:border-forest/40 hover:shadow-md"
               style={{
@@ -158,8 +199,8 @@ export default function TestimonialSection() {
           {/* Track */}
           <div className="overflow-hidden">
             <div
-              className="flex transition-transform duration-400 ease-in-out"
-              style={{ transform: `translateX(-${current * 100}%)` }}
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${translatePct}%)` }}
             >
               {TESTIMONIALS.map((t) => (
                 <TestimonialCard key={t.name} t={t} />
@@ -168,9 +209,9 @@ export default function TestimonialSection() {
           </div>
 
           {/* Next arrow */}
-          {current < last && (
+          {current < maxCurrent && (
             <button
-              onClick={() => setCurrent((c) => Math.min(last, c + 1))}
+              onClick={goNext}
               aria-label="Tiếp"
               className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 flex items-center justify-center bg-white text-forest transition-all duration-200 hover:border-forest/40 hover:shadow-md"
               style={{
@@ -188,15 +229,15 @@ export default function TestimonialSection() {
 
         {/* Dots */}
         <div className="flex justify-center gap-2 mt-8">
-          {TESTIMONIALS.map((_, i) => (
+          {Array.from({ length: totalDots }).map((_, i) => (
             <button
               key={i}
-              onClick={() => setCurrent(i)}
-              aria-label={`Testimonial ${i + 1}`}
+              onClick={() => goDot(i)}
+              aria-label={`Trang ${i + 1}`}
               className="h-2 rounded-full transition-all duration-300"
               style={{
-                width: current === i ? 24 : 8,
-                background: current === i ? '#1C3B2A' : 'rgba(28,59,42,0.2)',
+                width: activeDot === i ? 24 : 8,
+                background: activeDot === i ? '#1C3B2A' : 'rgba(28,59,42,0.2)',
               }}
             />
           ))}
