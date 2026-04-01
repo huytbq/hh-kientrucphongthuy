@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
 const TESTIMONIALS = [
   {
@@ -26,28 +26,94 @@ const TESTIMONIALS = [
   },
 ]
 
+function TestimonialCard({ t }: { t: typeof TESTIMONIALS[0] }) {
+  return (
+    <div
+      className="shrink-0 flex flex-col w-full md:w-1/3 px-3"
+    >
+      <div
+        className="flex flex-col h-full"
+        style={{
+          border: '1px solid rgba(28,59,42,0.1)',
+          borderRadius: 8,
+          padding: '36px 32px',
+        }}
+      >
+        {/* Stars */}
+        <div className="mb-3" style={{ fontSize: 12, color: '#C8A951', letterSpacing: 2 }}>
+          ★★★★★
+        </div>
+
+        {/* Opening quote mark */}
+        <span
+          className="block select-none mb-2"
+          style={{
+            fontFamily: 'var(--font-lora)',
+            fontSize: 64,
+            color: 'rgba(200,169,81,0.2)',
+            lineHeight: 0.8,
+          }}
+        >
+          &ldquo;
+        </span>
+
+        {/* Quote */}
+        <p
+          className="flex-1 text-forest-deep"
+          style={{
+            fontFamily: 'var(--font-lora)',
+            fontStyle: 'italic',
+            fontSize: 16,
+            lineHeight: 1.75,
+            marginBottom: 28,
+          }}
+        >
+          {t.quote}
+        </p>
+
+        {/* Divider */}
+        <div
+          style={{
+            width: 32,
+            height: 1,
+            background: 'rgba(200,169,81,0.3)',
+            marginBottom: 24,
+          }}
+        />
+
+        {/* Author */}
+        <div className="flex items-center gap-3.5">
+          <div
+            className="shrink-0 flex items-center justify-center text-gold"
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #1C3B2A, #2A5240)',
+              fontFamily: 'var(--font-josefin)',
+              fontSize: 16,
+              fontWeight: 700,
+            }}
+          >
+            {t.initial}
+          </div>
+          <div>
+            <div className="text-forest-deep" style={{ fontSize: 14, fontWeight: 600 }}>
+              {t.name}
+            </div>
+            <div className="text-forest/50" style={{ fontSize: 12 }}>
+              {t.location}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function TestimonialSection() {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [activeIndex, setActiveIndex] = useState(0)
-
-  const scrollTo = (index: number) => {
-    const container = scrollRef.current
-    if (!container) return
-    const card = container.children[index] as HTMLElement
-    if (!card) return
-    container.scrollTo({ left: card.offsetLeft, behavior: 'smooth' })
-    setActiveIndex(index)
-  }
-
-  const handleScroll = () => {
-    const container = scrollRef.current
-    if (!container) return
-    const scrollLeft = container.scrollLeft
-    const cardWidth = (container.children[0] as HTMLElement)?.offsetWidth ?? 0
-    const gap = 24
-    const idx = Math.round(scrollLeft / (cardWidth + gap))
-    setActiveIndex(Math.min(idx, TESTIMONIALS.length - 1))
-  }
+  const [current, setCurrent] = useState(0)
+  const last = TESTIMONIALS.length - 1
 
   return (
     <section style={{ padding: 'var(--section-padding)', background: '#fff' }}>
@@ -69,104 +135,55 @@ export default function TestimonialSection() {
           </h2>
         </div>
 
-        {/* Carousel */}
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="flex gap-6 overflow-x-auto pb-2"
-          style={{
-            scrollSnapType: 'x mandatory',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-          }}
-        >
-          {TESTIMONIALS.map((t) => (
-            <div
-              key={t.name}
-              className="shrink-0 flex flex-col"
+        {/* Carousel wrapper */}
+        <div className="relative">
+          {/* Prev arrow */}
+          {current > 0 && (
+            <button
+              onClick={() => setCurrent((c) => Math.max(0, c - 1))}
+              aria-label="Trước"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 flex items-center justify-center bg-white text-forest transition-all duration-200 hover:border-forest/40 hover:shadow-md"
               style={{
-                scrollSnapAlign: 'start',
-                minWidth: 'calc(33.333% - 16px)',
-                border: '1px solid rgba(28,59,42,0.1)',
-                borderRadius: 8,
-                padding: '36px 32px',
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                border: '1px solid rgba(28,59,42,0.15)',
+                fontSize: 18,
               }}
             >
-              {/* Stars */}
-              <div className="mb-3" style={{ fontSize: 12, color: '#C8A951', letterSpacing: 2 }}>
-                ★★★★★
-              </div>
+              ‹
+            </button>
+          )}
 
-              {/* Opening quote mark */}
-              <span
-                className="block leading-[0.8] select-none mb-2"
-                style={{
-                  fontFamily: 'var(--font-lora)',
-                  fontSize: 64,
-                  color: 'rgba(200,169,81,0.2)',
-                  lineHeight: 0.8,
-                }}
-              >
-                &ldquo;
-              </span>
-
-              {/* Quote */}
-              <p
-                className="flex-1 text-forest-deep"
-                style={{
-                  fontFamily: 'var(--font-lora)',
-                  fontStyle: 'italic',
-                  fontSize: 16,
-                  lineHeight: 1.75,
-                  marginBottom: 28,
-                }}
-              >
-                {t.quote}
-              </p>
-
-              {/* Divider */}
-              <div
-                style={{
-                  width: 32,
-                  height: 1,
-                  background: 'rgba(200,169,81,0.3)',
-                  marginBottom: 24,
-                }}
-              />
-
-              {/* Author */}
-              <div className="flex items-center gap-3.5">
-                <div
-                  className="shrink-0 flex items-center justify-center text-gold"
-                  style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #1C3B2A, #2A5240)',
-                    fontFamily: 'var(--font-josefin)',
-                    fontSize: 16,
-                    fontWeight: 700,
-                  }}
-                >
-                  {t.initial}
-                </div>
-                <div>
-                  <div
-                    className="text-forest-deep"
-                    style={{ fontSize: 14, fontWeight: 600 }}
-                  >
-                    {t.name}
-                  </div>
-                  <div
-                    className="text-forest/50"
-                    style={{ fontSize: 12 }}
-                  >
-                    {t.location}
-                  </div>
-                </div>
-              </div>
+          {/* Track */}
+          <div className="overflow-hidden">
+            <div
+              className="flex transition-transform duration-400 ease-in-out"
+              style={{ transform: `translateX(-${current * 100}%)` }}
+            >
+              {TESTIMONIALS.map((t) => (
+                <TestimonialCard key={t.name} t={t} />
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* Next arrow */}
+          {current < last && (
+            <button
+              onClick={() => setCurrent((c) => Math.min(last, c + 1))}
+              aria-label="Tiếp"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 flex items-center justify-center bg-white text-forest transition-all duration-200 hover:border-forest/40 hover:shadow-md"
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                border: '1px solid rgba(28,59,42,0.15)',
+                fontSize: 18,
+              }}
+            >
+              ›
+            </button>
+          )}
         </div>
 
         {/* Dots */}
@@ -174,15 +191,12 @@ export default function TestimonialSection() {
           {TESTIMONIALS.map((_, i) => (
             <button
               key={i}
-              onClick={() => scrollTo(i)}
+              onClick={() => setCurrent(i)}
               aria-label={`Testimonial ${i + 1}`}
               className="h-2 rounded-full transition-all duration-300"
               style={{
-                width: activeIndex === i ? 24 : 8,
-                background:
-                  activeIndex === i
-                    ? '#1C3B2A'
-                    : 'rgba(28,59,42,0.2)',
+                width: current === i ? 24 : 8,
+                background: current === i ? '#1C3B2A' : 'rgba(28,59,42,0.2)',
               }}
             />
           ))}
