@@ -47,84 +47,80 @@ const TESTIMONIALS = [
   },
 ]
 
-const TOTAL = TESTIMONIALS.length // 6
-
 function TestimonialCard({ t }: { t: (typeof TESTIMONIALS)[0] }) {
   return (
-    <div className="shrink-0 flex flex-col w-full md:w-1/3 px-3">
-      <div
-        className="flex flex-col h-full"
+    <div
+      className="flex flex-col h-full"
+      style={{
+        border: '1px solid rgba(28,59,42,0.1)',
+        borderRadius: 8,
+        padding: '36px 32px',
+      }}
+    >
+      {/* Stars */}
+      <div className="mb-3" style={{ fontSize: 12, color: '#C8A951', letterSpacing: 2 }}>
+        ★★★★★
+      </div>
+
+      {/* Opening quote mark */}
+      <span
+        className="block select-none mb-2"
         style={{
-          border: '1px solid rgba(28,59,42,0.1)',
-          borderRadius: 8,
-          padding: '36px 32px',
+          fontFamily: 'var(--font-lora)',
+          fontSize: 64,
+          color: 'rgba(200,169,81,0.2)',
+          lineHeight: 0.8,
         }}
       >
-        {/* Stars */}
-        <div className="mb-3" style={{ fontSize: 12, color: '#C8A951', letterSpacing: 2 }}>
-          ★★★★★
-        </div>
+        &ldquo;
+      </span>
 
-        {/* Opening quote mark */}
-        <span
-          className="block select-none mb-2"
-          style={{
-            fontFamily: 'var(--font-lora)',
-            fontSize: 64,
-            color: 'rgba(200,169,81,0.2)',
-            lineHeight: 0.8,
-          }}
-        >
-          &ldquo;
-        </span>
+      {/* Quote */}
+      <p
+        className="flex-1 text-forest-deep"
+        style={{
+          fontFamily: 'var(--font-lora)',
+          fontStyle: 'italic',
+          fontSize: 16,
+          lineHeight: 1.75,
+          marginBottom: 28,
+        }}
+      >
+        {t.quote}
+      </p>
 
-        {/* Quote */}
-        <p
-          className="flex-1 text-forest-deep"
-          style={{
-            fontFamily: 'var(--font-lora)',
-            fontStyle: 'italic',
-            fontSize: 16,
-            lineHeight: 1.75,
-            marginBottom: 28,
-          }}
-        >
-          {t.quote}
-        </p>
+      {/* Divider */}
+      <div
+        style={{
+          width: 32,
+          height: 1,
+          background: 'rgba(200,169,81,0.3)',
+          marginBottom: 24,
+        }}
+      />
 
-        {/* Divider */}
+      {/* Author */}
+      <div className="flex items-center gap-3.5">
         <div
+          className="shrink-0 flex items-center justify-center text-gold"
           style={{
-            width: 32,
-            height: 1,
-            background: 'rgba(200,169,81,0.3)',
-            marginBottom: 24,
+            width: 48,
+            height: 48,
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, #1C3B2A, #2A5240)',
+            fontFamily: 'var(--font-josefin)',
+            fontSize: 16,
+            fontWeight: 700,
           }}
-        />
-
-        {/* Author */}
-        <div className="flex items-center gap-3.5">
-          <div
-            className="shrink-0 flex items-center justify-center text-gold"
-            style={{
-              width: 48,
-              height: 48,
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #1C3B2A, #2A5240)',
-              fontFamily: 'var(--font-josefin)',
-              fontSize: 16,
-              fontWeight: 700,
-            }}
-          >
-            {t.initial}
+        >
+          {t.initial}
+        </div>
+        <div>
+          <div className="text-forest-deep" style={{ fontSize: 14, fontWeight: 600 }}>
+            {t.name}
           </div>
-          <div>
-            <div className="text-forest-deep" style={{ fontSize: 14, fontWeight: 600 }}>
-              {t.name}
-            </div>
-            <div className="text-forest/50" style={{ fontSize: 12 }}>
-              {t.location}
-            </div>
+          <div className="text-forest/50" style={{ fontSize: 12 }}>
+            {t.location}
           </div>
         </div>
       </div>
@@ -133,28 +129,29 @@ function TestimonialCard({ t }: { t: (typeof TESTIMONIALS)[0] }) {
 }
 
 export default function TestimonialSection() {
-  const [current, setCurrent] = useState(0)
+  const [activeGroup, setActiveGroup] = useState(0)
   const [itemsPerView, setItemsPerView] = useState(3)
 
   useEffect(() => {
-    const update = () => setItemsPerView(window.innerWidth >= 768 ? 3 : 1)
+    const update = () => {
+      const ipv = window.innerWidth >= 768 ? 3 : 1
+      setItemsPerView(ipv)
+      setActiveGroup(0) // reset to first group on resize
+    }
     update()
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  const totalDots = Math.ceil(TOTAL / itemsPerView)
-  // clamp current to valid page boundary when itemsPerView changes
-  const maxCurrent = (totalDots - 1) * itemsPerView
+  // Split TESTIMONIALS into pages of itemsPerView
+  const groups: (typeof TESTIMONIALS)[] = []
+  for (let i = 0; i < TESTIMONIALS.length; i += itemsPerView) {
+    groups.push(TESTIMONIALS.slice(i, i + itemsPerView))
+  }
+  const totalGroups = groups.length
 
-  const goPrev = () => setCurrent((c) => Math.max(0, c - itemsPerView))
-  const goNext = () => setCurrent((c) => Math.min(maxCurrent, c + itemsPerView))
-  const goDot  = (dotIdx: number) => setCurrent(dotIdx * itemsPerView)
-
-  const activeDot = Math.floor(current / itemsPerView)
-
-  // translateX: each card is 1/TOTAL of the track width
-  const translatePct = current * (100 / TOTAL)
+  const goPrev = () => setActiveGroup((g) => Math.max(0, g - 1))
+  const goNext = () => setActiveGroup((g) => Math.min(totalGroups - 1, g + 1))
 
   return (
     <section style={{ padding: '100px 80px 64px', background: '#fff' }}>
@@ -179,7 +176,7 @@ export default function TestimonialSection() {
         {/* Carousel wrapper */}
         <div className="relative">
           {/* Prev arrow */}
-          {current > 0 && (
+          {activeGroup > 0 && (
             <button
               onClick={goPrev}
               aria-label="Trước"
@@ -196,20 +193,40 @@ export default function TestimonialSection() {
             </button>
           )}
 
-          {/* Track */}
+          {/* Track: flex of 100%-wide pages, translate by -activeGroup * 100% */}
           <div className="overflow-hidden">
             <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${translatePct}%)` }}
+              className="flex"
+              style={{
+                transform: `translateX(-${activeGroup * 100}%)`,
+                transition: 'transform 0.45s ease',
+              }}
             >
-              {TESTIMONIALS.map((t) => (
-                <TestimonialCard key={t.name} t={t} />
+              {groups.map((group, gi) => (
+                <div
+                  key={gi}
+                  className="flex shrink-0"
+                  style={{ width: '100%' }}
+                >
+                  {group.map((t) => (
+                    <div
+                      key={t.name}
+                      className="flex flex-col"
+                      style={{
+                        width: `${100 / itemsPerView}%`,
+                        padding: '0 12px',
+                      }}
+                    >
+                      <TestimonialCard t={t} />
+                    </div>
+                  ))}
+                </div>
               ))}
             </div>
           </div>
 
           {/* Next arrow */}
-          {current < maxCurrent && (
+          {activeGroup < totalGroups - 1 && (
             <button
               onClick={goNext}
               aria-label="Tiếp"
@@ -229,15 +246,15 @@ export default function TestimonialSection() {
 
         {/* Dots */}
         <div className="flex justify-center gap-2 mt-8">
-          {Array.from({ length: totalDots }).map((_, i) => (
+          {Array.from({ length: totalGroups }).map((_, i) => (
             <button
               key={i}
-              onClick={() => goDot(i)}
+              onClick={() => setActiveGroup(i)}
               aria-label={`Trang ${i + 1}`}
               className="h-2 rounded-full transition-all duration-300"
               style={{
-                width: activeDot === i ? 24 : 8,
-                background: activeDot === i ? '#1C3B2A' : 'rgba(28,59,42,0.2)',
+                width: activeGroup === i ? 24 : 8,
+                background: activeGroup === i ? '#1C3B2A' : 'rgba(28,59,42,0.2)',
               }}
             />
           ))}
