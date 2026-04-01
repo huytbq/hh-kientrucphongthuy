@@ -33,7 +33,7 @@ const SERVICES = [
     desc: 'Tối ưu hóa văn phòng, mặt bằng thương mại theo nguyên lý tài lộc, thu hút khách hàng và nâng cao hiệu suất kinh doanh.',
     bullets: ['Văn phòng & cửa hàng', 'Bố trí tài lộc', 'Màu sắc thương hiệu'],
     price: 'Từ 5,000,000đ',
-    gradient: 'linear-gradient(135deg, #0F2318, #1C3B2A)',
+    gradient: 'linear-gradient(135deg, #1C2E3B, #1C3B3B)',
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="6" y="14" width="36" height="28" rx="1" stroke="#C8A951" strokeWidth="2.5" strokeLinecap="round"/>
@@ -61,7 +61,7 @@ const SERVICES = [
     desc: 'Tích hợp phong thủy từ giai đoạn bản vẽ, tạo ra công trình hài hòa âm dương, đúng hướng, đúng cung — đẹp và vượng khí.',
     bullets: ['Tích hợp từ bản vẽ', 'Hài hòa âm dương', 'Giám sát thi công'],
     price: 'Liên hệ báo giá',
-    gradient: 'linear-gradient(135deg, #2A5240, #3D7057)',
+    gradient: 'linear-gradient(135deg, #2E2A1C, #3B3520)',
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M34 6L42 14L16 40H8V32L34 6Z" stroke="#C8A951" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>

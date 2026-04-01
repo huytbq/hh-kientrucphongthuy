@@ -77,8 +77,9 @@ export default function ProcessSection() {
                     style={{
                       width: 120,
                       height: 120,
-                      border: '2px solid rgba(200,169,81,0.3)',
+                      border: '2px solid rgba(200,169,81,0.5)',
                       borderRadius: '50%',
+                      background: 'rgba(200,169,81,0.06)',
                       animation: 'borderPulse 3s ease infinite',
                     }}
                   >
@@ -100,7 +101,7 @@ export default function ProcessSection() {
                 <div className="flex-1">
                   <p
                     className="text-gold uppercase tracking-widest mb-2"
-                    style={{ fontSize: 10, fontFamily: 'var(--font-josefin)', fontWeight: 300 }}
+                    style={{ fontSize: 10, fontFamily: 'var(--font-josefin)', fontWeight: 600, color: '#C8A951' }}
                   >
                     {step.label}
                   </p>

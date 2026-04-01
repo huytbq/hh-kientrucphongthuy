@@ -42,8 +42,7 @@ function StatItem({
         className="text-3xl sm:text-4xl font-semibold text-gold leading-none"
         style={{ fontFamily: 'var(--font-lora)' }}
       >
-        {count}
-        {suffix}
+        {count}{suffix}
       </span>
       <span
         className="text-[10px] uppercase tracking-widest text-white/40 mt-1 text-center"
@@ -57,9 +56,15 @@ function StatItem({
 
 const STATS = [
   { value: 500, suffix: '+', label: 'Công Trình' },
-  { value: 15, suffix: '+', label: 'Năm Kinh Nghiệm' },
-  { value: 98, suffix: '%', label: 'Hài Lòng' },
-  { value: 63, suffix: '+', label: 'Tỉnh Thành' },
+  { value: 15,  suffix: '+', label: 'Năm Kinh Nghiệm' },
+  { value: 98,  suffix: '%', label: 'Hài Lòng' },
+  { value: 63,  suffix: '+', label: 'Tỉnh Thành' },
+]
+
+const BADGES = [
+  { text: '✦ Bát Quái', top: '20%', right: '15%', delay: 1 },
+  { text: '⬡ Ngũ Hành', top: '55%', right: '5%',  delay: 1.2 },
+  { text: '◎ Âm Dương', top: '75%', right: '20%', delay: 1.4 },
 ]
 
 const fadeUp = {
@@ -69,6 +74,66 @@ const fadeUp = {
     y: 0,
     transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] as [number, number, number, number], delay },
   }),
+}
+
+/* ── La Bàn SVG ── */
+function LaBanSvg() {
+  const cx = 260
+  const cy = 260
+
+  const rings = [240, 200, 160, 120, 80, 40]
+
+  // 8 diameter lines every 22.5° apart
+  const diameters = Array.from({ length: 8 }, (_, i) => {
+    const angle = (i * Math.PI * 2) / 16 // 22.5° steps
+    return {
+      x1: cx + Math.cos(angle) * 240,
+      y1: cy + Math.sin(angle) * 240,
+      x2: cx - Math.cos(angle) * 240,
+      y2: cy - Math.sin(angle) * 240,
+    }
+  })
+
+  // Outer octagon inscribed at r=200
+  const octagon200 = Array.from({ length: 8 }, (_, i) => {
+    const angle = (i * Math.PI) / 4
+    return `${cx + Math.cos(angle) * 200},${cy + Math.sin(angle) * 200}`
+  }).join(' ')
+
+  // Inner octagon at r=120, rotated 22.5°
+  const octagon120 = Array.from({ length: 8 }, (_, i) => {
+    const angle = (i * Math.PI) / 4 + Math.PI / 8
+    return `${cx + Math.cos(angle) * 120},${cy + Math.sin(angle) * 120}`
+  }).join(' ')
+
+  // 8 dots at r=160
+  const dots = Array.from({ length: 8 }, (_, i) => {
+    const angle = (i * Math.PI) / 4
+    return { x: cx + Math.cos(angle) * 160, y: cy + Math.sin(angle) * 160 }
+  })
+
+  return (
+    <svg viewBox="0 0 520 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Concentric rings */}
+      {rings.map((r) => (
+        <circle key={r} cx={cx} cy={cy} r={r} stroke="#C8A951" strokeWidth="0.6" />
+      ))}
+      {/* Diameter lines */}
+      {diameters.map((d, i) => (
+        <line key={i} x1={d.x1} y1={d.y1} x2={d.x2} y2={d.y2} stroke="#C8A951" strokeWidth="0.4" />
+      ))}
+      {/* Outer octagon r=200 */}
+      <polygon points={octagon200} stroke="#C8A951" strokeWidth="0.8" fill="none" />
+      {/* Inner octagon r=120, rotated */}
+      <polygon points={octagon120} stroke="#C8A951" strokeWidth="0.8" fill="none" />
+      {/* 8 dots at r=160 */}
+      {dots.map((d, i) => (
+        <circle key={i} cx={d.x} cy={d.y} r="3" fill="#C8A951" />
+      ))}
+      {/* Center dot */}
+      <circle cx={cx} cy={cy} r="5" fill="#C8A951" />
+    </svg>
+  )
 }
 
 export default function HeroSection() {
@@ -98,41 +163,48 @@ export default function HeroSection() {
         style={{ background: 'var(--forest-gradient)' }}
       />
 
-      {/* Layer 2 — bát quái SVG texture */}
-      <div
+      {/* Layer 2 — La Bàn SVG (right side, rotating slowly) */}
+      <motion.div
         className="absolute pointer-events-none"
         style={{
-          right: '-10%',
+          right: -60,
           top: '50%',
-          transform: 'translateY(-50%)',
-          width: 700,
-          height: 700,
-          animation: 'shimmer 4s ease-in-out infinite',
+          width: 520,
+          height: 520,
+          opacity: 0,
+          animation: 'rotateSlow 120s linear infinite',
         }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.12 }}
+        transition={{ duration: 1.5, delay: 0.5 }}
       >
-        <svg viewBox="0 0 700 700" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {[320, 260, 200, 140, 80].map((r) => (
-            <circle key={r} cx="350" cy="350" r={r} stroke="#C8A951" strokeWidth="0.8" />
-          ))}
-          {Array.from({ length: 8 }, (_, i) => {
-            const angle = (i * Math.PI) / 4
-            const x2 = 350 + Math.cos(angle) * 320
-            const y2 = 350 + Math.sin(angle) * 320
-            return (
-              <line key={i} x1="350" y1="350" x2={x2} y2={y2} stroke="#C8A951" strokeWidth="0.8" />
-            )
-          })}
-          <polygon
-            points={Array.from({ length: 8 }, (_, i) => {
-              const angle = (i * Math.PI) / 4 - Math.PI / 8
-              return `${350 + Math.cos(angle) * 320},${350 + Math.sin(angle) * 320}`
-            }).join(' ')}
-            stroke="#C8A951"
-            strokeWidth="0.8"
-          />
-          <circle cx="350" cy="350" r="4" fill="#C8A951" />
-        </svg>
-      </div>
+        <LaBanSvg />
+      </motion.div>
+
+      {/* Floating badges */}
+      {BADGES.map((badge) => (
+        <motion.div
+          key={badge.text}
+          className="absolute pointer-events-none hidden lg:block"
+          style={{ top: badge.top, right: badge.right }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: badge.delay }}
+        >
+          <span
+            className="block text-[10px] uppercase tracking-widest px-3 py-1.5"
+            style={{
+              color: 'rgba(200,169,81,0.7)',
+              border: '1px solid rgba(200,169,81,0.3)',
+              borderRadius: 20,
+              backdropFilter: 'blur(4px)',
+              letterSpacing: '0.15em',
+            }}
+          >
+            {badge.text}
+          </span>
+        </motion.div>
+      ))}
 
       {/* Layer 3 — left gradient overlay */}
       <div

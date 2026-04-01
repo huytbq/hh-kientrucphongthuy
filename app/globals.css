@@ -91,3 +91,7 @@ body {
   0%, 100% { border-color: rgba(200,169,81,0.3) }
   50%      { border-color: rgba(200,169,81,0.8) }
 }
+@keyframes rotateSlow {
+  from { transform: translateY(-50%) rotate(0deg) }
+  to   { transform: translateY(-50%) rotate(360deg) }
+}

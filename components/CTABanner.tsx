@@ -7,7 +7,7 @@ export default function CTABanner() {
   return (
     <section
       className="relative overflow-hidden"
-      style={{ padding: '80px', background: 'var(--forest-gradient)' }}
+      style={{ padding: '0 80px 80px', background: 'var(--forest-gradient)' }}
     >
       {/* Decorative circles */}
       <div
