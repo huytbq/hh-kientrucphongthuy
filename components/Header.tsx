@@ -48,8 +48,24 @@ export default function Header() {
             <div className="hidden lg:block">
               <Link
                 href="/lien-he"
-                className="inline-block bg-forest text-white text-sm font-semibold px-5 py-2.5 hover:bg-forest-mid transition-colors duration-150"
-                style={{ fontFamily: 'var(--font-body)' }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.transform = 'translateY(-1px)'
+                  el.style.boxShadow = '0 4px 16px rgba(28,59,42,0.25)'
+                  el.style.background = '#2A5240'
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.transform = 'translateY(0)'
+                  el.style.boxShadow = 'none'
+                  el.style.background = '#1C3B2A'
+                }}
+                className="inline-block bg-forest text-white text-sm font-semibold px-5 py-2.5"
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  animation: 'navPulse 2.5s ease-in-out infinite',
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease, background-color 0.15s',
+                }}
               >
                 Tư Vấn Miễn Phí
               </Link>

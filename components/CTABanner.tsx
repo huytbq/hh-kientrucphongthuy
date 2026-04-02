@@ -88,7 +88,17 @@ export default function CTABanner() {
           <div className="flex flex-col gap-3" style={{ width: 200 }}>
             <Link
               href="/lien-he"
-              className="flex items-center justify-center text-forest-deep font-bold uppercase hover:bg-gold-light transition-colors duration-150"
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement
+                el.style.transform = 'scale(1.02)'
+                el.style.boxShadow = '0 6px 24px rgba(200,169,81,0.35)'
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement
+                el.style.transform = 'none'
+                el.style.boxShadow = 'none'
+              }}
+              className="flex items-center justify-center text-forest-deep font-bold uppercase"
               style={{
                 background: '#C8A951',
                 fontSize: 11,
@@ -97,23 +107,48 @@ export default function CTABanner() {
                 letterSpacing: '0.1em',
                 padding: '14px 0',
                 borderRadius: 2,
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'transform 0.25s ease, box-shadow 0.25s ease',
               }}
             >
-              Đặt Lịch Tư Vấn
+              <span style={{ position: 'relative', zIndex: 1 }}>Đặt Lịch Tư Vấn</span>
+              <span
+                aria-hidden
+                style={{
+                  position: 'absolute', top: 0, left: '-100%', width: '60%', height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+                  animation: 'shimmerBtn 3s ease-in-out infinite',
+                  pointerEvents: 'none',
+                }}
+              />
             </Link>
             <a
               href={BRAND.zalo}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center text-gold transition-all duration-150 hover:bg-gold/10"
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement
+                el.style.borderColor = '#C8A951'
+                el.style.background = 'rgba(200,169,81,0.08)'
+                el.style.boxShadow = '0 0 0 3px rgba(200,169,81,0.1)'
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement
+                el.style.borderColor = 'rgba(200,169,81,0.6)'
+                el.style.background = 'transparent'
+                el.style.boxShadow = 'none'
+              }}
+              className="flex items-center justify-center text-gold"
               style={{
                 fontSize: 11,
                 fontFamily: 'var(--font-josefin)',
                 fontWeight: 600,
                 letterSpacing: '0.1em',
                 padding: '14px 0',
-                border: '1px solid rgba(200,169,81,0.5)',
+                border: '1.5px solid rgba(200,169,81,0.6)',
                 borderRadius: 2,
+                transition: 'all 0.25s ease',
               }}
             >
               Nhắn Zalo →

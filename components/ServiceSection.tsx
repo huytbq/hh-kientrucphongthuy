@@ -207,10 +207,13 @@ export default function ServiceSection() {
                   </span>
                   <Link
                     href="/lien-he"
-                    className="text-forest hover:underline transition-all"
+                    className="group/arrow text-forest transition-all"
                     style={{ fontSize: 12, fontWeight: 500 }}
                   >
-                    Tư vấn ngay →
+                    Tư vấn ngay
+                    <span
+                      className="inline-block ml-1 transition-transform duration-200 group-hover/arrow:translate-x-1"
+                    >→</span>
                   </Link>
                 </div>
               </div>
