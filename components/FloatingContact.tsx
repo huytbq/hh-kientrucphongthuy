@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { BRAND } from '@/lib/constants'
+import { trackEvent, GA_EVENTS } from '@/lib/analytics'
 
 export default function FloatingContact() {
   const [visible, setVisible] = useState(false)
@@ -52,13 +53,14 @@ export default function FloatingContact() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat Zalo"
+          onClick={() => trackEvent(GA_EVENTS.ZALO_CLICK, { location: 'floating' })}
           className="flex items-center justify-center text-white transition-transform duration-200 hover:scale-[1.12]"
           style={{
             width: 52,
             height: 52,
             borderRadius: '50%',
             background: '#0068FF',
-            animation: 'ringPulse 2s ease-out infinite',
+            animation: 'ringPulse 1.5s ease-out infinite',
           }}
         >
           <span
@@ -89,13 +91,14 @@ export default function FloatingContact() {
         <a
           href={`tel:${BRAND.phone.replace(/\s/g, '')}`}
           aria-label="Gọi hotline"
+          onClick={() => trackEvent(GA_EVENTS.CALL_CLICK, { location: 'floating' })}
           className="flex items-center justify-center text-white transition-transform duration-200 hover:scale-[1.12]"
           style={{
             width: 52,
             height: 52,
             borderRadius: '50%',
             background: '#1C3B2A',
-            animation: 'ringPulseForest 2s ease-out infinite 1s',
+            animation: 'ringPulseForest 1.5s ease-out infinite 1s',
           }}
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">

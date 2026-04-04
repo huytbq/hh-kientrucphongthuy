@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Lora, Josefin_Sans, Be_Vietnam_Pro } from 'next/font/google'
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -82,6 +83,12 @@ export default function RootLayout({
         </ScrollRevealWrapper>
         <Footer />
         <FloatingContact />
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+        )}
       </body>
     </html>
   )

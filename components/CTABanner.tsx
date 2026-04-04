@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { BRAND } from '@/lib/constants'
+import { trackEvent, GA_EVENTS } from '@/lib/analytics'
 
 export default function CTABanner() {
   return (
@@ -74,6 +75,7 @@ export default function CTABanner() {
         <div className="shrink-0 flex flex-col items-center lg:items-end gap-5">
           <a
             href={`tel:${BRAND.phone.replace(/\s/g, '')}`}
+            onClick={() => trackEvent(GA_EVENTS.CALL_CLICK, { location: 'cta_banner' })}
             className="text-gold hover:text-gold-light transition-colors duration-150"
             style={{
               fontFamily: 'var(--font-josefin)',
@@ -98,6 +100,7 @@ export default function CTABanner() {
                 el.style.transform = 'none'
                 el.style.boxShadow = 'none'
               }}
+              onClick={() => trackEvent(GA_EVENTS.CTA_CLICK, { location: 'cta_banner' })}
               className="flex items-center justify-center text-forest-deep font-bold uppercase"
               style={{
                 background: '#C8A951',

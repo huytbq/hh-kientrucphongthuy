@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 import { BRAND, NAV_LINKS } from '@/lib/constants'
+import { trackEvent, GA_EVENTS } from '@/lib/analytics'
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -60,11 +61,14 @@ export default function Header() {
                   el.style.boxShadow = 'none'
                   el.style.background = '#1C3B2A'
                 }}
+                onClick={() => trackEvent(GA_EVENTS.CTA_CLICK, { location: 'header' })}
                 className="inline-block bg-forest text-white text-sm font-semibold px-5 py-2.5"
                 style={{
                   fontFamily: 'var(--font-body)',
-                  animation: 'navPulse 2.5s ease-in-out infinite',
+                  borderRadius: '8px',
+                  // animation: 'navPulse 2.5s ease-in-out infinite',
                   transition: 'transform 0.2s ease, box-shadow 0.2s ease, background-color 0.15s',
+                  animation: 'ringPulseForest 1.5s ease-out infinite 1s'
                 }}
               >
                 Tư Vấn Miễn Phí
