@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.9.0",
+    "@formspree/react": "^3.0.0",
+    "@next/third-parties": "^16.2.2",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.7.0",
     "next": "16.2.1",
