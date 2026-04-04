@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Lora, Josefin_Sans, Be_Vietnam_Pro } from 'next/font/google'
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
+import Script from 'next/script'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -89,6 +90,7 @@ export default function RootLayout({
         {process.env.NEXT_PUBLIC_GTM_ID && (
           <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
         )}
+        <Script src="https://sp.zalo.me/plugins/sdk.js" strategy="lazyOnload" />
       </body>
     </html>
   )

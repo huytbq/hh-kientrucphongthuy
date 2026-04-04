@@ -22,71 +22,42 @@ export default function FloatingContact() {
   if (!visible) return null
 
   return (
-    <div
-      className="fixed z-[999] flex flex-col items-center gap-3"
-      style={{ bottom: 32, right: 32 }}
-    >
-      {/* Scroll to top — only when scrolled */}
-      {showScrollTop && (
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          aria-label="Cuộn lên đầu trang"
-          className="flex items-center justify-center transition-transform duration-200 hover:scale-110 bg-white text-forest"
-          style={{
-            width: 44,
-            height: 44,
-            borderRadius: '50%',
-            border: '1px solid rgba(28,59,42,0.2)',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-          }}
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M8 12V4M4 8l4-4 4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-      )}
+    <>
+      {/* Zalo OA Official Widget */}
+      <div
+        className="zalo-chat-widget"
+        data-oaid="579745863508352884"
+        data-welcome-message="Xin chào! Tôi có thể hỗ trợ gì cho bạn?"
+        data-autopopup="0"
+        data-width="350"
+        data-height="420"
+      />
 
-      {/* Zalo */}
-      <div className="relative group">
-        <a
-          href={BRAND.zalo}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Chat Zalo"
-          onClick={() => trackEvent(GA_EVENTS.ZALO_CLICK, { location: 'floating' })}
-          className="flex items-center justify-center text-white transition-transform duration-200 hover:scale-[1.12]"
-          style={{
-            width: 52,
-            height: 52,
-            borderRadius: '50%',
-            background: '#0068FF',
-            animation: 'ringPulse 1.5s ease-out infinite',
-          }}
-        >
-          <span
+      <div
+        className="fixed z-[999] flex flex-col items-center gap-3"
+        style={{ bottom: 32, right: 32 }}
+      >
+        {/* Scroll to top — only when scrolled */}
+        {showScrollTop && (
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Cuộn lên đầu trang"
+            className="flex items-center justify-center transition-transform duration-200 hover:scale-110 bg-white text-forest"
             style={{
-              fontFamily: 'var(--font-josefin)',
-              fontSize: 20,
-              fontWeight: 700,
-              lineHeight: 1,
+              width: 44,
+              height: 44,
+              borderRadius: '50%',
+              border: '1px solid rgba(28,59,42,0.2)',
+              boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
             }}
           >
-            Z
-          </span>
-        </a>
-        <span
-          className="absolute top-1/2 -translate-y-1/2 pointer-events-none whitespace-nowrap text-white text-xs px-2.5 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
-          style={{
-            right: 'calc(100% + 10px)',
-            background: '#0F2318',
-            borderRadius: 4,
-          }}
-        >
-          Chat Zalo
-        </span>
-      </div>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 12V4M4 8l4-4 4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        )}
 
-      {/* Hotline */}
+        {/* Hotline */}
       <div className="relative group">
         <a
           href={`tel:${BRAND.phone.replace(/\s/g, '')}`}
@@ -121,7 +92,8 @@ export default function FloatingContact() {
         >
           Gọi ngay: {BRAND.phone}
         </span>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

@@ -1,13 +1,20 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Phone } from 'lucide-react'
 import { BRAND, NAV_LINKS } from '@/lib/constants'
 import { trackEvent, GA_EVENTS } from '@/lib/analytics'
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 300)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <>
@@ -15,21 +22,40 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-18">
 
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 shrink-0">
-              <div
-                className="w-10 h-10 flex items-center justify-center bg-forest"
-                style={{ fontFamily: 'var(--font-josefin)', fontWeight: 700 }}
+            {/* Logo + scroll phone */}
+            <div className="flex items-center gap-4">
+              <Link href="/" className="flex items-center gap-3 shrink-0">
+                <div
+                  className="w-10 h-10 flex items-center justify-center bg-forest"
+                  style={{ fontFamily: 'var(--font-josefin)', fontWeight: 700 }}
+                >
+                  <span className="text-gold text-lg tracking-tight">HH</span>
+                </div>
+                <span
+                  className="hidden sm:block text-forest text-sm font-semibold leading-snug"
+                  style={{ fontFamily: 'var(--font-body)' }}
+                >
+                  {BRAND.name}
+                </span>
+              </Link>
+
+              {/* Phone — desktop only, visible after scroll 300px */}
+              <a
+                href={`tel:${BRAND.phone.replace(/\s/g, '')}`}
+                className="hidden lg:flex items-center gap-1.5 text-forest/70 hover:text-forest transition-colors duration-150"
+                style={{
+                  fontSize: 12,
+                  fontFamily: 'var(--font-body)',
+                  opacity: scrolled ? 1 : 0,
+                  transform: scrolled ? 'translateY(0)' : 'translateY(-6px)',
+                  transition: 'opacity 0.25s ease, transform 0.25s ease',
+                  pointerEvents: scrolled ? 'auto' : 'none',
+                }}
               >
-                <span className="text-gold text-lg tracking-tight">HH</span>
-              </div>
-              <span
-                className="hidden sm:block text-forest text-sm font-semibold leading-snug"
-                style={{ fontFamily: 'var(--font-body)' }}
-              >
-                {BRAND.name}
-              </span>
-            </Link>
+                <Phone size={12} />
+                {BRAND.phone}
+              </a>
+            </div>
 
             {/* Desktop nav */}
             <nav className="hidden lg:flex items-center gap-7">
