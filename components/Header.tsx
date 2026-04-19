@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Menu, X, Phone } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -10,6 +10,7 @@ import { trackEvent, GA_EVENTS } from '@/lib/analytics'
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const savedScrollY = useRef(0)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 300)
@@ -18,8 +19,28 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    if (mobileOpen) {
+      savedScrollY.current = window.scrollY
+      document.body.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${savedScrollY.current}px`
+      document.body.style.width = '100%'
+      document.body.classList.add('menu-open')
+    } else {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+      document.body.classList.remove('menu-open')
+      window.scrollTo(0, savedScrollY.current)
+    }
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+      document.body.classList.remove('menu-open')
+    }
   }, [mobileOpen])
 
   return (
@@ -127,8 +148,8 @@ export default function Header() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[60] flex flex-col justify-between"
-        style={{ background: 'rgba(15,35,24,0.98)', backdropFilter: 'blur(12px)' }}
+          className="fixed inset-0 z-[999] flex flex-col justify-between"
+          style={{ background: 'rgba(15,35,24,0.98)', backdropFilter: 'blur(12px)', height: '100dvh' }}
         >
           {/* Header row */}
           <div className="flex items-center justify-between px-6 h-16 border-b" style={{ borderColor: 'rgba(200,169,81,0.15)' }}>

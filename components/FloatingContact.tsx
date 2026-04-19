@@ -34,7 +34,7 @@ export default function FloatingContact() {
       />
 
       <div
-        className="fixed z-[999] flex flex-col items-center gap-3"
+        className="floating-contact-wrap fixed z-[999] flex flex-col items-center gap-3"
         style={{
           bottom: 'max(80px, calc(env(safe-area-inset-bottom) + 80px))',
           right: 'max(20px, calc(env(safe-area-inset-right) + 20px))',
@@ -45,7 +45,7 @@ export default function FloatingContact() {
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             aria-label="Cuộn lên đầu trang"
-            className="flex items-center justify-center transition-transform duration-200 hover:scale-110 bg-white text-forest"
+            className="scroll-to-top flex items-center justify-center transition-transform duration-200 hover:scale-110 bg-white text-forest"
             style={{
               width: 44,
               height: 44,

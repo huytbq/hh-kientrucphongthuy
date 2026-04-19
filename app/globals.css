@@ -41,6 +41,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ── Menu open: hide floating buttons ── */
+body.menu-open .floating-contact-wrap,
+body.menu-open .scroll-to-top {
+  display: none !important;
+}
+
 /* ── Custom properties ── */
 :root {
   --forest-gradient: linear-gradient(135deg, #0F2318 0%, #1C3B2A 50%, #0F2318 100%);
