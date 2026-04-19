@@ -148,7 +148,7 @@ export default function Header() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[999] flex flex-col justify-between"
+          className="fixed inset-0 z-[999] flex flex-col"
           style={{ background: 'rgba(15,35,24,0.98)', backdropFilter: 'blur(12px)', height: '100dvh' }}
         >
           {/* Header row */}
@@ -177,13 +177,13 @@ export default function Header() {
           </div>
 
           {/* Nav links */}
-          <nav className="flex flex-col px-6">
-            {NAV_LINKS.map((link) => (
+          <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 32px' }}>
+            {NAV_LINKS.map((link, i) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="block py-4 transition-colors hover:text-gold"
+                className="block transition-colors hover:text-gold"
                 style={{
                   fontFamily: 'var(--font-josefin)',
                   fontSize: 18,
@@ -191,7 +191,8 @@ export default function Header() {
                   textTransform: 'uppercase',
                   letterSpacing: '3px',
                   color: '#F8F6F1',
-                  borderBottom: '1px solid rgba(200,169,81,0.15)',
+                  padding: '18px 0',
+                  borderBottom: i < NAV_LINKS.length - 1 ? '1px solid rgba(200,169,81,0.12)' : 'none',
                 }}
               >
                 {link.label}
