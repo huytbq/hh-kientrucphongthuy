@@ -163,9 +163,9 @@ export default function HeroSection() {
         style={{ background: 'var(--forest-gradient)' }}
       />
 
-      {/* Layer 2 — La Bàn SVG (right side, rotating slowly) */}
+      {/* Layer 2 — La Bàn SVG (right side, rotating slowly) — hidden on mobile */}
       <motion.div
-        className="absolute pointer-events-none"
+        className="absolute pointer-events-none hidden md:block"
         style={{
           right: -60,
           top: '50%',
@@ -247,7 +247,7 @@ export default function HeroSection() {
             className="text-white mb-6 leading-[1.1]"
             style={{
               fontFamily: 'var(--font-lora)',
-              fontSize: 'clamp(40px, 5vw, 64px)',
+              fontSize: 'clamp(32px, 8vw, 64px)',
               fontWeight: 600,
             }}
           >
@@ -313,7 +313,7 @@ export default function HeroSection() {
             initial="hidden"
             animate="visible"
             custom={0.55}
-            className="flex flex-wrap gap-3.5"
+            className="flex flex-col sm:flex-row gap-3.5"
             style={{ marginTop: 44 }}
           >
             <Link
@@ -328,7 +328,7 @@ export default function HeroSection() {
                 el.style.transform = 'none'
                 el.style.boxShadow = 'none'
               }}
-              className="inline-block text-[11px] font-bold uppercase tracking-[2px]"
+              className="inline-block text-[11px] font-bold uppercase tracking-[2px] text-center w-full sm:w-auto"
               style={{
                 fontFamily: 'var(--font-josefin)',
                 background: '#C8A951',
@@ -365,7 +365,7 @@ export default function HeroSection() {
                 el.style.background = 'transparent'
                 el.style.boxShadow = 'none'
               }}
-              className="inline-block text-[11px] uppercase tracking-[2px]"
+              className="inline-block text-[11px] uppercase tracking-[2px] text-center w-full sm:w-auto"
               style={{
                 fontFamily: 'var(--font-josefin)',
                 fontWeight: 600,

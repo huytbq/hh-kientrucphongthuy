@@ -31,7 +31,7 @@ const STEPS = [
 
 export default function ProcessSection() {
   return (
-    <section style={{ padding: 'var(--section-padding)', background: '#F8F6F1' }}>
+    <section className="py-[60px] md:py-[100px]" style={{ background: '#F8F6F1' }}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -59,19 +59,13 @@ export default function ProcessSection() {
             return (
               <div
                 key={step.num}
-                className={`${revealClass} flex flex-col md:flex-row items-center gap-10 md:gap-20 py-14 ${
-                  i < STEPS.length - 1 ? 'border-b' : ''
-                }`}
-                style={{
-                  borderColor: 'rgba(28,59,42,0.08)',
-                  flexDirection: isOdd ? undefined : 'row-reverse',
-                }}
+                className={`${revealClass} flex flex-col md:flex-row items-center gap-8 md:gap-20 py-10 md:py-14 ${
+                  !isOdd ? 'md:flex-row-reverse' : ''
+                } ${i < STEPS.length - 1 ? 'border-b' : ''}`}
+                style={{ borderColor: 'rgba(28,59,42,0.08)' }}
               >
                 {/* Number circle */}
-                <div
-                  className="shrink-0 flex items-center justify-center"
-                  style={{ width: 180 }}
-                >
+                <div className="shrink-0 flex items-center justify-center w-full md:w-[180px]">
                   <div
                     className="flex items-center justify-center"
                     style={{
@@ -98,7 +92,7 @@ export default function ProcessSection() {
                 </div>
 
                 {/* Text */}
-                <div className="flex-1">
+                <div className="flex-1 text-center md:text-left">
                   <p
                     className="text-gold uppercase tracking-widest mb-2"
                     style={{ fontSize: 10, fontFamily: 'var(--font-josefin)', fontWeight: 600, color: '#C8A951' }}

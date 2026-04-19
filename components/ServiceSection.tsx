@@ -84,7 +84,7 @@ const SERVICES = [
 
 export default function ServiceSection() {
   return (
-    <section style={{ padding: 'var(--section-padding)', background: '#fff' }}>
+    <section className="py-[60px] md:py-[100px]" style={{ background: '#fff' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section header */}
@@ -113,7 +113,7 @@ export default function ServiceSection() {
         </div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
           {SERVICES.map((s, i) => (
             <div
               key={s.num}
@@ -138,8 +138,8 @@ export default function ServiceSection() {
             >
               {/* Top visual */}
               <div
-                className="relative flex items-center justify-center"
-                style={{ height: 200, background: s.gradient, overflow: 'hidden' }}
+                className="relative flex items-center justify-center h-40 md:h-[200px]"
+                style={{ background: s.gradient, overflow: 'hidden' }}
               >
                 {/* SVG background pattern */}
                 <div className="absolute inset-0">{s.svgBg}</div>

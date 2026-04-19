@@ -7,8 +7,8 @@ import { trackEvent, GA_EVENTS } from '@/lib/analytics'
 export default function CTABanner() {
   return (
     <section
-      className="relative overflow-hidden"
-      style={{ padding: '64px 80px', background: 'var(--forest-gradient)' }}
+      className="relative overflow-hidden py-12 px-6 md:py-[64px] md:px-20"
+      style={{ background: 'var(--forest-gradient)' }}
     >
       {/* Decorative circles */}
       <div
@@ -79,7 +79,7 @@ export default function CTABanner() {
             className="text-gold hover:text-gold-light transition-colors duration-150"
             style={{
               fontFamily: 'var(--font-josefin)',
-              fontSize: 32,
+              fontSize: 'clamp(24px, 5vw, 32px)',
               fontWeight: 700,
               letterSpacing: 3,
               display: 'block',
@@ -87,7 +87,7 @@ export default function CTABanner() {
           >
             {BRAND.phone}
           </a>
-          <div className="flex flex-col gap-3" style={{ width: 200 }}>
+          <div className="flex flex-col gap-3 w-full md:w-[200px]">
             <Link
               href="/lien-he"
               onMouseEnter={(e) => {

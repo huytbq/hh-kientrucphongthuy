@@ -31,7 +31,7 @@ const SERVICE_TYPES = [
 ]
 
 const base =
-  'w-full border border-forest/15 bg-white px-4 py-3 text-sm text-forest placeholder:text-forest/40 focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold transition-colors duration-150'
+  'w-full border border-forest/15 bg-white px-4 py-3 text-base text-forest placeholder:text-forest/40 focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold transition-colors duration-150 min-h-[48px]'
 
 type FieldErrors = Partial<Record<'name' | 'phone' | 'email', string>>
 

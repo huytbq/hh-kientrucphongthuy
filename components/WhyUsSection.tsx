@@ -61,9 +61,7 @@ const REASONS = [
 
 export default function WhyUsSection() {
   return (
-    <section
-      style={{ padding: 'var(--section-padding)', background: '#0F2318' }}
-    >
+    <section className="py-[60px] md:py-[100px]" style={{ background: '#0F2318' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -98,7 +96,7 @@ export default function WhyUsSection() {
               key={r.title}
               className="reveal group transition-all duration-300"
               style={{
-                padding: '52px 48px',
+                padding: 'clamp(32px, 4vw, 52px) clamp(24px, 3vw, 48px)',
                 border: '1px solid rgba(200,169,81,0.08)',
                 transitionDelay: `${r.delay}ms`,
               }}

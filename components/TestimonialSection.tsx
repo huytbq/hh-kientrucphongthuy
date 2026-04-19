@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const TESTIMONIALS = [
   {
@@ -153,8 +153,11 @@ export default function TestimonialSection() {
   const goPrev = () => setActiveGroup((g) => Math.max(0, g - 1))
   const goNext = () => setActiveGroup((g) => Math.min(totalGroups - 1, g + 1))
 
+  const touchStart = useRef<number>(0)
+  const touchEnd = useRef<number>(0)
+
   return (
-    <section style={{ padding: '100px 80px 64px', background: '#fff' }}>
+    <section className="py-[60px] md:py-[100px]" style={{ background: '#fff' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -200,6 +203,15 @@ export default function TestimonialSection() {
               style={{
                 transform: `translateX(-${activeGroup * 100}%)`,
                 transition: 'transform 0.45s ease',
+              }}
+              onTouchStart={(e) => { touchStart.current = e.targetTouches[0].clientX }}
+              onTouchMove={(e) => { touchEnd.current = e.targetTouches[0].clientX }}
+              onTouchEnd={() => {
+                const diff = touchStart.current - touchEnd.current
+                if (Math.abs(diff) > 50) {
+                  if (diff > 0) goNext()
+                  else goPrev()
+                }
               }}
             >
               {groups.map((group, gi) => (

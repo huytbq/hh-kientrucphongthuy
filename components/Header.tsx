@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Menu, X, Phone } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { BRAND, NAV_LINKS } from '@/lib/constants'
 import { trackEvent, GA_EVENTS } from '@/lib/analytics'
 
@@ -15,6 +16,11 @@ export default function Header() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [mobileOpen])
 
   return (
     <>
@@ -114,8 +120,15 @@ export default function Header() {
       </header>
 
       {/* Mobile overlay */}
+      <AnimatePresence>
       {mobileOpen && (
-        <div className="fixed inset-0 z-[60] bg-white flex flex-col">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.25 }}
+          className="fixed inset-0 z-[60] bg-white flex flex-col"
+        >
           {/* Header row */}
           <div className="flex items-center justify-between px-4 h-16 border-b border-forest/10">
             <Link
@@ -166,8 +179,9 @@ export default function Header() {
             </Link>
             <p className="text-center text-forest/50 text-sm mt-4">{BRAND.phone}</p>
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </>
   )
 }
