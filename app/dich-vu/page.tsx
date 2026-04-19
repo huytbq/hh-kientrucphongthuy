@@ -177,7 +177,7 @@ export default function ServicePage() {
         className="relative overflow-hidden"
         style={{
           background: 'var(--forest-gradient)',
-          padding: '120px 80px 80px',
+          padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px) clamp(48px, 5vw, 80px)',
         }}
       >
         <div className="max-w-7xl mx-auto text-center">
@@ -207,7 +207,7 @@ export default function ServicePage() {
       </section>
 
       {/* Pricing cards */}
-      <section style={{ padding: '80px 0', background: '#fff' }}>
+      <section style={{ padding: 'clamp(48px, 6vw, 80px) 0', background: '#fff' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
             {PLANS.map((plan) => (
@@ -331,7 +331,7 @@ export default function ServicePage() {
       </section>
 
       {/* FAQ */}
-      <section style={{ padding: '80px 0', background: '#F8F6F1' }}>
+      <section style={{ padding: 'clamp(48px, 6vw, 80px) 0', background: '#F8F6F1' }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <p

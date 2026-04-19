@@ -127,7 +127,7 @@ export default function Header() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[60] flex flex-col"
+          className="fixed inset-0 z-[60] flex flex-col justify-between"
         style={{ background: 'rgba(15,35,24,0.98)', backdropFilter: 'blur(12px)' }}
         >
           {/* Header row */}
@@ -156,7 +156,7 @@ export default function Header() {
           </div>
 
           {/* Nav links */}
-          <nav className="flex-1 flex flex-col justify-center px-6">
+          <nav className="flex flex-col px-6">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}

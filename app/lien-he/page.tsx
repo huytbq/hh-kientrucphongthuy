@@ -62,7 +62,7 @@ export default function ContactPage() {
       </section>
 
       {/* Body */}
-      <section className="py-16 lg:py-24 bg-offwhite">
+      <section className="py-12 md:py-16 lg:py-[100px] bg-offwhite">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-5 gap-10 xl:gap-14 items-start">
 
