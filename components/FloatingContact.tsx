@@ -36,8 +36,8 @@ export default function FloatingContact() {
       <div
         className="fixed z-[999] flex flex-col items-center gap-3"
         style={{
-          bottom: 'max(32px, calc(env(safe-area-inset-bottom) + 16px))',
-          right: 'max(24px, calc(env(safe-area-inset-right) + 16px))',
+          bottom: 'max(80px, calc(env(safe-area-inset-bottom) + 80px))',
+          right: 'max(20px, calc(env(safe-area-inset-right) + 20px))',
         }}
       >
         {/* Scroll to top — only when scrolled */}

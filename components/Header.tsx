@@ -127,10 +127,11 @@ export default function Header() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[60] bg-white flex flex-col"
+          className="fixed inset-0 z-[60] flex flex-col"
+        style={{ background: 'rgba(15,35,24,0.98)', backdropFilter: 'blur(12px)' }}
         >
           {/* Header row */}
-          <div className="flex items-center justify-between px-4 h-16 border-b border-forest/10">
+          <div className="flex items-center justify-between px-6 h-16 border-b" style={{ borderColor: 'rgba(200,169,81,0.15)' }}>
             <Link
               href="/"
               onClick={() => setMobileOpen(false)}
@@ -142,11 +143,12 @@ export default function Header() {
               >
                 <span className="text-gold text-lg">HH</span>
               </div>
-              <span className="text-forest text-sm font-semibold">{BRAND.name}</span>
+              <span className="text-sm font-semibold" style={{ color: '#F8F6F1', fontFamily: 'var(--font-body)' }}>{BRAND.name}</span>
             </Link>
             <button
               onClick={() => setMobileOpen(false)}
-              className="p-2 text-forest"
+              className="p-2"
+              style={{ color: '#F8F6F1' }}
               aria-label="Đóng menu"
             >
               <X size={22} />
@@ -154,14 +156,22 @@ export default function Header() {
           </div>
 
           {/* Nav links */}
-          <nav className="flex-1 flex flex-col justify-center px-8 gap-1">
+          <nav className="flex-1 flex flex-col justify-center px-6">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="text-forest text-2xl font-medium py-3 border-b border-forest/8 hover:text-gold transition-colors"
-                style={{ fontFamily: 'var(--font-lora)' }}
+                className="block py-4 transition-colors hover:text-gold"
+                style={{
+                  fontFamily: 'var(--font-josefin)',
+                  fontSize: 18,
+                  fontWeight: 300,
+                  textTransform: 'uppercase',
+                  letterSpacing: '3px',
+                  color: '#F8F6F1',
+                  borderBottom: '1px solid rgba(200,169,81,0.15)',
+                }}
               >
                 {link.label}
               </Link>
@@ -169,15 +179,24 @@ export default function Header() {
           </nav>
 
           {/* Bottom CTA */}
-          <div className="px-8 pb-10">
+          <div className="pb-10">
             <Link
               href="/lien-he"
               onClick={() => setMobileOpen(false)}
-              className="block w-full text-center bg-forest text-white font-semibold py-4 hover:bg-forest-mid transition-colors"
+              className="block text-center font-bold py-4 transition-opacity hover:opacity-90"
+              style={{
+                fontFamily: 'var(--font-josefin)',
+                fontSize: 11,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                background: '#C8A951',
+                color: '#0F2318',
+                margin: '0 24px',
+              }}
             >
               Tư Vấn Miễn Phí
             </Link>
-            <p className="text-center text-forest/50 text-sm mt-4">{BRAND.phone}</p>
+            <p className="text-center text-sm mt-4" style={{ color: 'rgba(248,246,241,0.4)' }}>{BRAND.phone}</p>
           </div>
         </motion.div>
       )}
