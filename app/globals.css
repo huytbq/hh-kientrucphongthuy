@@ -122,3 +122,39 @@ body.menu-open .scroll-to-top {
   70%  { box-shadow: 0 0 40px rgba(200,169,81,0.15), 0 0 0 15px rgba(28,59,42,0) }
   100% { box-shadow: 0 0 40px rgba(200,169,81,0.15), 0 0 0 0   rgba(28,59,42,0) }
 }
+
+/* ── Blog prose styles ── */
+.prose h2 {
+  font-family: var(--font-lora);
+  font-size: 22px;
+  font-weight: 600;
+  color: #0F2318;
+  margin: 36px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(200,169,81,0.2);
+  line-height: 1.35;
+}
+.prose p {
+  font-size: 15px;
+  line-height: 1.9;
+  margin-bottom: 18px;
+  color: #3a3a3a;
+}
+.prose ul,
+.prose ol {
+  padding-left: 22px;
+  margin-bottom: 18px;
+}
+.prose li {
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 8px;
+  color: #3a3a3a;
+}
+.prose strong {
+  color: #1C3B2A;
+  font-weight: 600;
+}
+.prose h2:first-child {
+  margin-top: 0;
+}
