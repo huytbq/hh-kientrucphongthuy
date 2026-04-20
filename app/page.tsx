@@ -1,5 +1,6 @@
 import HeroSection from '@/components/HeroSection'
 import ServiceSection from '@/components/ServiceSection'
+import FeaturedProjects from '@/components/FeaturedProjects'
 import ProcessSection from '@/components/ProcessSection'
 import WhyUsSection from '@/components/WhyUsSection'
 import TestimonialSection from '@/components/TestimonialSection'
@@ -10,6 +11,7 @@ export default function HomePage() {
     <>
       <HeroSection />
       <ServiceSection />
+      <FeaturedProjects />
       <ProcessSection />
       <WhyUsSection />
       <TestimonialSection />
