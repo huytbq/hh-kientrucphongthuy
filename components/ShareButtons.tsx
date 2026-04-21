@@ -5,10 +5,6 @@ import { useState } from 'react'
 export default function ShareButtons() {
   const [copied, setCopied] = useState(false)
 
-  function getUrl() {
-    return typeof window !== 'undefined' ? window.location.href : ''
-  }
-
   function copyLink() {
     navigator.clipboard.writeText(window.location.href).then(() => {
       setCopied(true)
@@ -16,7 +12,7 @@ export default function ShareButtons() {
     })
   }
 
-  const url = getUrl()
+  const url = typeof window !== 'undefined' ? window.location.href : ''
 
   return (
     <div
@@ -93,7 +89,7 @@ export default function ShareButtons() {
           gap: 6,
           padding: '8px 16px',
           background: 'white',
-          color: copied ? '#1C3B2A' : '#1C3B2A',
+          color: '#1C3B2A',
           border: '1px solid rgba(28,59,42,0.3)',
           borderRadius: 4,
           fontSize: 13,

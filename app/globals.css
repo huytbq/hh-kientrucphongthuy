@@ -24,6 +24,11 @@
 :root {
   --background: #F8F6F0;
   --foreground: #1C3B2A;
+  --header-h: 64px;
+}
+
+@media (min-width: 1024px) {
+  :root { --header-h: 72px; }
 }
 
 html {

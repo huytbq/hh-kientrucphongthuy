@@ -231,10 +231,12 @@ export default async function BlogDetailPage({ params }: Props) {
                 </Link>
               </div>
 
-              <div
-                className="prose"
-                dangerouslySetInnerHTML={{ __html: part2 }}
-              />
+              {part2 && (
+                <div
+                  className="prose"
+                  dangerouslySetInnerHTML={{ __html: part2 }}
+                />
+              )}
 
               <ShareButtons />
             </article>

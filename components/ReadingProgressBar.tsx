@@ -19,7 +19,7 @@ export default function ReadingProgressBar() {
     <div
       style={{
         position: 'fixed',
-        top: 64,
+        top: 'var(--header-h, 64px)',
         left: 0,
         zIndex: 99,
         height: 3,
